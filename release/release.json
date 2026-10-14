@@ -1,5 +1,9 @@
 {
-  "Version": "1.0",
-  "ReleaseDate": "2024-01-01",
-  "Author": "DevOps Team"
+  "version": "v2.3.0",
+  "releaseDate": "2026-10-14",
+  "commitSha": "16d46b7",
+  "author": "DevOps Team",
+  "environment": "production",
+  "imageTag": "v2.3.0",
+  "approvedBy": "DevOps Lead"
 }

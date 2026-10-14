@@ -5,29 +5,32 @@ on:
     branches:
       - main
 
+env:
+  RELEASE_VERSION: v2.3.0
+
 jobs:
-  deploy-production:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to Production
-        run: |
-          chmod +x scripts/deploy.sh
-          ./scripts/deploy.sh
-
   validate-release:
     runs-on: ubuntu-latest
-    needs: deploy-production
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Run Tests
+      - name: Run tests
         run: |
           echo "Running validation tests..."
           npm install --prefix app
           npm test --prefix app
-          echo "Validation complete - some tests failed because deployment config has errors"
-          exit 1
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: validate-release
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to production
+        run: |
+          echo "Deploying version: ${{ env.RELEASE_VERSION }}"
+          bash scripts/deploy.sh
+          echo "Deployment of ${{ env.RELEASE_VERSION }} complete."
